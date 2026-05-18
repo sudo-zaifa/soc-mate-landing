@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="description" content="SOC-Mate is a modern security operations dashboard for alerts, CTI feeds, tickets, reports, and analyst workflows." />
-  <title>SOC‑Mate  Intelligent Analyst For SOC</title>
+  <title>SOC‑Mate — Intelligent Analyst For SOC</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
@@ -19,19 +19,24 @@
       </a>
       <nav class="nav">
         <a class="nav-link" href="#platform">Platform</a>
+        <a class="nav-link" href="#problem">Problem</a>
         <a class="nav-link" href="#capabilities">Capabilities</a>
+        <a class="nav-link" href="#architecture">Architecture</a>
+        <a class="nav-link" href="#chatbot">AI Assistant</a>
         <a class="nav-link" href="#preview">Preview</a>
-        <a class="btn btn-outline" href="#contact">Request demo</a>
         <a class="nav-link" href="#team">Team</a>
+        <a class="btn btn-outline" href="#contact">Request demo</a>
       </nav>
     </div>
   </header>
 
   <main id="top">
+
+    <!-- ── HERO ── -->
     <section class="hero">
       <div class="container hero-inner">
         <div class="hero-copy">
-          <p class="eyebrow">SOC‑Mate  Intelligent Analyst For SOC </p>
+          <p class="eyebrow">SOC‑Mate — Intelligent Analyst For SOC</p>
           <h1>See every alert, feed, ticket and chatbot in one focused SOC workspace.</h1>
           <p class="lead">SOC-Mate gives analysts a clear command surface for triage, threat intelligence, reporting, and incident handling without the noise of a crowded toolchain.</p>
           <div class="hero-ctas">
@@ -39,31 +44,22 @@
             <a class="btn btn-outline" href="https://soc-mate-dashboard.vercel.app/" target="_blank" rel="noreferrer">Open reference</a>
           </div>
           <dl class="hero-stats" aria-label="SOC-Mate highlights">
-            <div>
-              <dt>Unified views</dt>
-              <dd>Alerts, CTI, tickets</dd>
-            </div>
-            <div>
-              <dt>Analyst-first</dt>
-              <dd>Fast triage workflows</dd>
-            </div>
-            <div>
-              <dt>Operational clarity</dt>
-              <dd>Built for daily SOC work</dd>
-            </div>
+            <div><dt>Unified views</dt><dd>Alerts, CTI, tickets</dd></div>
+            <div><dt>Analyst-first</dt><dd>Fast triage workflows</dd></div>
+            <div><dt>Operational clarity</dt><dd>Built for daily SOC work</dd></div>
           </dl>
         </div>
-
         <div class="hero-panel">
           <div class="hero-panel-top">
             <span class="status-dot"></span>
             Live dashboard preview
           </div>
-          <img class="hero-image" src="assets/demo.png" alt="SOC-Mate dashboard preview showing the attack timeline and sidebar navigation" />
+          <img class="hero-image" src="assets/demo.png" alt="SOC-Mate dashboard preview" />
         </div>
       </div>
     </section>
 
+    <!-- ── PLATFORM STRIP ── -->
     <section id="platform" class="container strip-grid">
       <article class="info-card accent-card">
         <p class="card-label">Command center</p>
@@ -72,26 +68,267 @@
       </article>
       <article class="info-card">
         <p class="card-label">Chat bot</p>
-        <h2> keeping the analyst focused on unified platform</h2>
-        <p> Handles generic quries and analysis quries which require analysis of IP, hash and URLs </p>
+        <h2>Keeping the analyst focused on a unified platform</h2>
+        <p>Handles generic queries and analysis queries which require analysis of IP, hash and URLs.</p>
       </article>
     </section>
 
+    <!-- ── THE REALITY / PROBLEM ── -->
+    <section id="problem" class="reality-section">
+      <div class="container">
+        <p class="section-eyebrow">// The reality</p>
+        <h2 class="section-heading">SOC analysts are drowning in alerts</h2>
+        <p class="section-sub">Modern security teams face an impossible volume of work. The average analyst sees 4,484 alerts per day — and ignores 67% of them.</p>
+
+        <div class="pain-grid">
+          <div class="pain-card"><div class="pain-icon">⚠</div><strong>Alert Overload</strong><p>Thousands of SIEM alerts daily — analysts can't triage them all.</p></div>
+          <div class="pain-card"><div class="pain-icon">🔇</div><strong>False Positives</strong><p>Endless noise drowns the signals that actually matter.</p></div>
+          <div class="pain-card"><div class="pain-icon">🐢</div><strong>Slow Investigation</strong><p>Manual lookups across 6+ tools delay every response.</p></div>
+          <div class="pain-card"><div class="pain-icon">🔀</div><strong>Tool Sprawl</strong><p>Disconnected SIEM, CTI, sandbox, ticketing — context lost.</p></div>
+          <div class="pain-card"><div class="pain-icon">😓</div><strong>Analyst Burnout</strong><p>Repetitive grunt work pushes talented analysts to quit.</p></div>
+          <div class="pain-card"><div class="pain-icon">❓</div><strong>No Context</strong><p>Raw alerts without enrichment leave teams guessing intent.</p></div>
+        </div>
+
+        <!-- WORKFLOW COMPARE — styled like image 3 & 4 -->
+        <div class="workflow-compare">
+          <div class="workflow-col">
+            <span class="workflow-badge badge-legacy">LEGACY SOC</span>
+            <h3>Traditional Workflow</h3>
+            <ol class="workflow-steps">
+              <li><span class="step-num step-num--red">1</span><span>Alert fires → analyst pages</span></li>
+              <li><span class="step-num step-num--red">2</span><span>Open 6 tools, copy IoCs</span></li>
+              <li><span class="step-num step-num--red">3</span><span>Lookup VT, AbuseIPDB manually</span></li>
+              <li><span class="step-num step-num--red">4</span><span>Write ticket by hand</span></li>
+              <li><span class="step-num step-num--red">5</span><span>Draft email summary</span></li>
+              <li><span class="step-num step-num--red">6</span><span class="step-slow">→ 45+ minutes per alert</span></li>
+            </ol>
+          </div>
+
+          <div class="workflow-divider">
+            <div class="vs-badge">VS</div>
+          </div>
+
+          <div class="workflow-col">
+            <span class="workflow-badge badge-modern">SOC-MATE</span>
+            <h3>AI-Augmented Workflow</h3>
+            <ol class="workflow-steps">
+              <li><span class="step-num step-num--cyan">1</span><span>Alert fires → AI agent triggers</span></li>
+              <li><span class="step-num step-num--cyan">2</span><span>Auto-enriches with CTI feeds</span></li>
+              <li><span class="step-num step-num--cyan">3</span><span>MITRE mapping + risk scoring</span></li>
+              <li><span class="step-num step-num--cyan">4</span><span>Ticket auto-created in Jira</span></li>
+              <li><span class="step-num step-num--cyan">5</span><span>Email + dashboard updated</span></li>
+              <li><span class="step-num step-num--cyan">6</span><span class="step-fast">→ under 2 minutes</span></li>
+            </ol>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── CAPABILITIES ── -->
     <section id="capabilities" class="features">
       <div class="container">
-        <h2>Core capabilities</h2>
-        <p>Everything a small or mid-sized SOC needs to stay organized and responsive.</p>
+        <p class="section-eyebrow">// The solution</p>
+        <h2>One platform. Every SOC capability.</h2>
+        <p>SOC-Mate unifies SIEM, threat intelligence, AI reasoning, and incident response into a single intelligent workflow.</p>
         <div class="feature-grid">
-          <div class="card"><strong>Alerts</strong><p>Track active security events with a clear priority path.</p></div>
-          <div class="card"><strong>CTI Feed</strong><p>Bring threat intelligence into the same operational view.</p></div>
-          <div class="card"><strong>Tickets</strong><p>Keep incidents moving with structured follow-up.</p></div>
-          <div class="card"><strong>Reports</strong><p>Summarize work for analysts, leads, and executives.</p></div>
-          <div class="card"><strong>Workflows</strong><p>Reduce friction when coordinating a response.</p></div>
-          <div class="card"><strong>Scale</strong><p>Stay readable as the volume of alerts grows.</p></div>
+          <div class="card"><strong>AI Alert Analysis</strong><p>LLM-powered triage that explains every alert in plain language.</p></div>
+          <div class="card"><strong>Threat Intel Enrichment</strong><p>Live IoC enrichment from VirusTotal, AbuseIPDB, URLhaus &amp; MISP.</p></div>
+          <div class="card"><strong>MITRE ATT&amp;CK Mapping</strong><p>Auto-classify every incident to tactics, techniques &amp; sub-techniques.</p></div>
+          <div class="card"><strong>SIEM Rule Generation</strong><p>Generate Wazuh rules from natural language in seconds.</p></div>
+          <div class="card"><strong>Email Notifications</strong><p>Rich incident summaries delivered to the right responders.</p></div>
+          <div class="card"><strong>AI Chatbot Assistant</strong><p>Ask questions, run lookups, generate rules — conversationally.</p></div>
+          <div class="card"><strong>Jira Ticketing</strong><p>Auto-create, assign, and track incident tickets end-to-end.</p></div>
+          <div class="card"><strong>Automated Reporting</strong><p>On-demand investigation &amp; shift-handover reports.</p></div>
+          <div class="card"><strong>URL / IP / File Scanning</strong><p>Multi-engine scans with consolidated verdicts.</p></div>
+          <div class="card"><strong>SSL Certificate Analysis</strong><p>Detect expired, weak, or impersonating certificates.</p></div>
+          <div class="card"><strong>Real-Time CTI Feeds</strong><p>Always-on threat intelligence streams across the platform.</p></div>
+          <div class="card"><strong>Dashboard Notifications</strong><p>Live SOC dashboard with incident timelines &amp; analyst activity.</p></div>
         </div>
       </div>
     </section>
 
+    <!-- ── ARCHITECTURE — matches image 2 ── -->
+    <section id="architecture" class="architecture-section">
+      <div class="container">
+        <p class="section-eyebrow">// Architecture</p>
+        <h2 class="section-heading">Inside the <span class="accent-text">SOC-Mate</span> pipeline</h2>
+        <p class="section-sub">From raw SIEM event to enriched intel, AI reasoning, automated response, and analyst notification — fully orchestrated.</p>
+
+        <div class="arch-wrapper">
+          <!-- Horizontal scrollable pipeline row -->
+          <div class="arch-pipeline-scroll">
+            <div class="arch-pipeline-row">
+
+              <div class="arch-node">
+                <div class="arch-dot"></div>
+                <div class="arch-node-box">
+                  <div class="arch-icon-wrap"><span>🛡</span></div>
+                  <strong>Wazuh SIEM</strong>
+                  <span>Detection</span>
+                </div>
+                <div class="arch-h-line"></div>
+              </div>
+
+              <div class="arch-node">
+                <div class="arch-dot"></div>
+                <div class="arch-node-box">
+                  <div class="arch-icon-wrap"><span>📡</span></div>
+                  <strong>CTI Feeds</strong>
+                  <span>VirusTotal · MISP · AbuseIPDB</span>
+                </div>
+                <div class="arch-h-line"></div>
+              </div>
+
+              <div class="arch-node">
+                <div class="arch-dot"></div>
+                <div class="arch-node-box">
+                  <div class="arch-icon-wrap"><span>🔗</span></div>
+                  <strong>Webhook</strong>
+                  <span>Event ingest</span>
+                </div>
+                <div class="arch-h-line"></div>
+              </div>
+
+              <div class="arch-node arch-node--ai">
+                <div class="arch-dot arch-dot--cyan"></div>
+                <div class="arch-node-box">
+                  <div class="arch-icon-wrap arch-icon-wrap--ai"><span>🤖</span></div>
+                  <strong>AI Agent</strong>
+                  <span>Triage &amp; reasoning</span>
+                </div>
+                <div class="arch-h-line"></div>
+              </div>
+
+              <div class="arch-node">
+                <div class="arch-dot"></div>
+                <div class="arch-node-box">
+                  <div class="arch-icon-wrap"><span>🔍</span></div>
+                  <strong>Security Tools</strong>
+                  <span>Scanners · sandbox</span>
+                </div>
+                <div class="arch-h-line"></div>
+              </div>
+
+              <div class="arch-node">
+                <div class="arch-dot"></div>
+                <div class="arch-node-box">
+                  <div class="arch-icon-wrap"><span>📋</span></div>
+                  <strong>Rule Generation</strong>
+                  <span>Wazuh / Sigma</span>
+                </div>
+                <div class="arch-h-line"></div>
+              </div>
+
+              <div class="arch-node">
+                <div class="arch-dot"></div>
+                <div class="arch-node-box">
+                  <div class="arch-icon-wrap"><span>📊</span></div>
+                  <strong>Reporting</strong>
+                  <span>Auto-generated</span>
+                </div>
+                <div class="arch-h-line"></div>
+              </div>
+
+              <div class="arch-node arch-node--last">
+                <div class="arch-dot"></div>
+                <div class="arch-node-box">
+                  <div class="arch-icon-wrap"><span>⚡</span></div>
+                  <strong>AI Response</strong>
+                  <span>Decision engine</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Dashed vertical connector -->
+          <div class="arch-v-connector">
+            <div class="arch-v-line"></div>
+          </div>
+
+          <!-- Output cards row — 3 wide cards -->
+          <div class="arch-outputs-row">
+            <div class="arch-output-card arch-output-card--cyan">
+              <div class="arch-output-left">
+                <div class="arch-output-icon">⊞</div>
+                <div>
+                  <strong>Dashboard</strong>
+                  <span>Real-time delivery</span>
+                </div>
+              </div>
+              <div class="arch-output-bell bell--cyan">🔔</div>
+            </div>
+
+            <div class="arch-output-card arch-output-card--purple">
+              <div class="arch-output-left">
+                <div class="arch-output-icon">✉</div>
+                <div>
+                  <strong>Email Alert</strong>
+                  <span>Real-time delivery</span>
+                </div>
+              </div>
+              <div class="arch-output-bell bell--purple">🔔</div>
+            </div>
+
+            <div class="arch-output-card arch-output-card--green">
+              <div class="arch-output-left">
+                <div class="arch-output-icon">⊟</div>
+                <div>
+                  <strong>Jira Ticket</strong>
+                  <span>Real-time delivery</span>
+                </div>
+              </div>
+              <div class="arch-output-bell bell--green">🔔</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── AI CHATBOT ── -->
+    <section id="chatbot" class="chatbot-section">
+      <div class="container chatbot-inner">
+        <div class="chatbot-copy">
+          <p class="section-eyebrow">// AI Assistant</p>
+          <h2>Talk to your SOC, not your tools</h2>
+          <p>The SOC-Mate chatbot is a conversational interface to your entire security stack. Ask, investigate, generate, classify — in plain English.</p>
+          <div class="chatbot-prompts">
+            <span class="prompt-pill">Analyze this suspicious IP</span>
+            <span class="prompt-pill">Generate Wazuh rule for brute force</span>
+            <span class="prompt-pill">Check this file hash</span>
+            <span class="prompt-pill">Classify this phishing email</span>
+            <span class="prompt-pill">Map this attack to MITRE ATT&amp;CK</span>
+          </div>
+        </div>
+
+        <div class="chat-window">
+          <div class="chat-header">
+            <span class="status-dot"></span>
+            <strong>SOC-Mate AI Assistant</strong>
+            <span class="online-badge">● ONLINE</span>
+          </div>
+          <div class="chat-messages">
+            <div class="chat-msg chat-msg--user">
+              Analyze this suspicious IP: 185.254.97.249
+            </div>
+            <div class="chat-msg chat-msg--ai">
+              <span class="ai-label">SOC-Mate</span>
+              Reputation: <span class="tag-mal">malicious (87/100)</span>. Flagged by 14 vendors on VirusTotal, 96 reports on AbuseIPDB. Associated with C2 infrastructure for the Bumblebee loader. MITRE: <code>T1071.001</code>. Recommend block at perimeter and hunt for outbound 443 to this IP across past 30 days.
+            </div>
+            <div class="chat-msg chat-msg--user">
+              Generate a Wazuh rule for brute-force SSH attempts
+            </div>
+            <div class="chat-msg chat-msg--ai">
+              <span class="ai-label">SOC-Mate</span>
+              Created rule <code>SOCX-1650</code> — 5 failed authentications from same source within 60s triggers level 10 alert. Mapped to MITRE <code>T1110.001</code>. Ready to deploy to your Wazuh manager.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── PREVIEW ── -->
     <section id="preview" class="container preview-section">
       <div class="preview-copy">
         <p class="card-label">Operational view</p>
@@ -102,82 +339,60 @@
     </section>
 
     <!-- ── TEAM ── -->
-<section id="team" class="team-section">
-  <div class="container">
-    <p class="card-label team-eyebrow">// The builders</p>
-    <h2 class="team-heading">Meet the <span class="accent-text">team</span> behind SOC-Mate</h2>
-    <p class="team-sub">Security engineers and researchers who built SOC-Mate from the ground up — combining deep SOC experience with modern AI tooling.</p>
+    <section id="team" class="team-section">
+      <div class="container">
+        <p class="card-label team-eyebrow">// The builders</p>
+        <h2 class="team-heading">Meet the <span class="accent-text">team</span> behind SOC-Mate</h2>
+        <p class="team-sub">Security engineers and researchers who built SOC-Mate from the ground up — combining deep SOC experience with modern AI tooling.</p>
 
-    <div class="team-grid">
-
-      <!-- Member 1 -->
-      <div class="team-card" id="team-huzaifa">
-        <div class="team-card-top">
-          <div class="member-avatar" aria-hidden="true">
-            <span class="avatar-initials">MH</span>
-            <div class="avatar-ring"></div>
+        <div class="team-grid">
+          <div class="team-card">
+            <div class="team-card-top">
+              <div class="member-avatar"><span class="avatar-initials">MH</span><div class="avatar-ring"></div></div>
+              <div class="member-meta">
+                <h3 class="member-name">Muhammad Huzaifa</h3>
+                <p class="member-role">Lead Engineer &amp; Architect</p>
+              </div>
+            </div>
+            <div class="member-tags">
+              <span class="tag">AI/ML</span><span class="tag">SIEM</span><span class="tag">Full-Stack</span>
+            </div>
+            <div class="card-glow card-glow--cyan"></div>
           </div>
-          <div class="member-meta">
-            <h3 class="member-name">Muhammad Huzaifa</h3>
-            <p class="member-role">Lead Engineer &amp; Architect</p>
+
+          <div class="team-card">
+            <div class="team-card-top">
+              <div class="member-avatar member-avatar--blue"><span class="avatar-initials">AN</span><div class="avatar-ring"></div></div>
+              <div class="member-meta">
+                <h3 class="member-name">Amna Naeem</h3>
+                <p class="member-role">Threat Intelligence &amp; CTI</p>
+              </div>
+            </div>
+            <div class="member-tags">
+              <span class="tag">CTI</span><span class="tag">MITRE ATT&amp;CK</span><span class="tag">IOC Analysis</span>
+            </div>
+            <div class="card-glow card-glow--blue"></div>
+          </div>
+
+          <div class="team-card">
+            <div class="team-card-top">
+              <div class="member-avatar member-avatar--teal"><span class="avatar-initials">SF</span><div class="avatar-ring"></div></div>
+              <div class="member-meta">
+                <h3 class="member-name">Saif</h3>
+                <p class="member-role">Security Operations</p>
+              </div>
+            </div>
+            <div class="member-tags">
+              <span class="tag">SOC Ops</span><span class="tag">Detection</span><span class="tag">Incident Response</span>
+            </div>
+            <div class="card-glow card-glow--teal"></div>
           </div>
         </div>
-        <p class="member-bio">Designed and built the SOC-Mate platform end-to-end — from the AI triage pipeline and SIEM integrations to the real-time analyst dashboard.</p>
-        <div class="member-tags">
-          <span class="tag">AI/ML</span>
-          <span class="tag">SIEM</span>
-          <span class="tag">Full-Stack</span>
-        </div>
-        <div class="card-glow card-glow--cyan"></div>
       </div>
+    </section>
 
-      <!-- Member 2 -->
-      <div class="team-card" id="team-amna">
-        <div class="team-card-top">
-          <div class="member-avatar member-avatar--blue" aria-hidden="true">
-            <span class="avatar-initials">AN</span>
-            <div class="avatar-ring"></div>
-          </div>
-          <div class="member-meta">
-            <h3 class="member-name">Amna Naeem</h3>
-            <p class="member-role">Threat Intelligence &amp; CTI</p>
-          </div>
-        </div>
-        <p class="member-bio">Drives the threat-intelligence enrichment pipeline — mapping IOCs, correlating MITRE ATT&amp;CK techniques, and ensuring every alert carries actionable context.</p>
-        <div class="member-tags">
-          <span class="tag">CTI</span>
-          <span class="tag">MITRE ATT&amp;CK</span>
-          <span class="tag">IOC Analysis</span>
-        </div>
-        <div class="card-glow card-glow--blue"></div>
-      </div>
+  </main>
 
-      <!-- Member 3 -->
-      <div class="team-card" id="team-saif">
-        <div class="team-card-top">
-          <div class="member-avatar member-avatar--teal" aria-hidden="true">
-            <span class="avatar-initials">SF</span>
-            <div class="avatar-ring"></div>
-          </div>
-          <div class="member-meta">
-            <h3 class="member-name">Saif</h3>
-            <p class="member-role">Security Operations</p>
-          </div>
-        </div>
-        <p class="member-bio">Brings operational SOC expertise to the product — validating detection logic, fine-tuning alert fidelity, and bridging the gap between tooling and real-world analyst workflows.</p>
-        <div class="member-tags">
-          <span class="tag">SOC Ops</span>
-          <span class="tag">Detection</span>
-          <span class="tag">Incident Response</span>
-        </div>
-        <div class="card-glow card-glow--teal"></div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-  
   <footer class="site-footer">
     <div class="container footer-inner">
       <div>SOC-Mate landing page</div>
