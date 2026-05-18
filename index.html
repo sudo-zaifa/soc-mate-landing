@@ -7,25 +7,534 @@
   <title>SOC‑Mate — Intelligent Analyst For SOC</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700&family=Syne:wght@600;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #050816;
+      --bg-elevated: #091120;
+      --panel: #0e1830;
+      --panel-strong: #14213d;
+      --line: rgba(148,163,184,0.14);
+      --muted: #8096b4;
+      --text: #e8f0ff;
+      --accent: #23c8ff;
+      --accent-strong: #0a84ff;
+      --accent-soft: rgba(35,200,255,0.10);
+      --red: #f87171;
+      --red-soft: rgba(248,113,113,0.10);
+      --green: #45fca8;
+      --purple: #c084fc;
+      --shadow: 0 24px 80px rgba(0,0,0,0.4);
+      --font-body: 'DM Sans', system-ui, sans-serif;
+      --font-display: 'Syne', system-ui, sans-serif;
+      --font-mono: 'IBM Plex Mono', monospace;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 10% 0%, rgba(35,200,255,0.09) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 40% at 90% 10%, rgba(10,132,255,0.11) 0%, transparent 55%),
+        radial-gradient(ellipse 40% 60% at 80% 90%, rgba(168,85,247,0.06) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    h1,h2,h3,h4 { margin: 0; letter-spacing: -0.03em; font-family: var(--font-display); }
+    p { margin: 0; }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; }
+
+    .container { max-width: 1160px; margin: 0 auto; padding: 0 28px; position: relative; z-index: 1; }
+
+    /* ── NAV ── */
+    .site-header {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(5,8,22,0.8);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(148,163,184,0.1);
+      padding: 14px 0;
+    }
+    .header-inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .logo { display: inline-flex; align-items: center; gap: 10px; font-family: var(--font-display); font-size: 18px; font-weight: 800; color: var(--text); }
+    .logo-icon {
+      width: 38px; height: 38px; border-radius: 10px;
+      background: linear-gradient(135deg, rgba(35,200,255,0.25), rgba(10,132,255,0.15));
+      border: 1px solid rgba(35,200,255,0.35);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-mono); font-size: 14px; font-weight: 700; color: var(--accent);
+    }
+    .nav { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+    .nav-link {
+      color: var(--muted); font-size: 13px; font-weight: 600;
+      padding: 6px 10px; border-radius: 8px;
+      transition: color 0.2s, background 0.2s;
+    }
+    .nav-link:hover { color: var(--text); background: rgba(255,255,255,0.05); }
+    .btn {
+      display: inline-block; padding: 10px 18px; border-radius: 10px;
+      font-size: 13px; font-weight: 700; font-family: var(--font-body);
+      cursor: pointer; border: none; transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+      color: #03101f; box-shadow: 0 8px 24px rgba(35,200,255,0.25);
+    }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 14px 32px rgba(35,200,255,0.35); }
+    .btn-outline {
+      border: 1px solid rgba(35,200,255,0.25); color: var(--text);
+      background: rgba(255,255,255,0.03);
+    }
+    .btn-outline:hover { background: rgba(35,200,255,0.08); border-color: rgba(35,200,255,0.45); }
+
+    /* ── HERO ── */
+    .hero { padding: 80px 0 56px; position: relative; z-index: 1; }
+    .hero-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 52px; align-items: center; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      margin-bottom: 20px; padding: 7px 14px;
+      border: 1px solid rgba(35,200,255,0.2);
+      border-radius: 999px; background: rgba(35,200,255,0.06);
+      color: var(--accent); font-size: 11px; font-weight: 700;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      font-family: var(--font-mono);
+    }
+    .hero-copy h1 {
+      font-size: clamp(2.4rem, 4.5vw, 4rem);
+      line-height: 1.02; margin-bottom: 20px;
+    }
+    .hero-copy h1 span { color: var(--accent); }
+    .lead { color: var(--muted); font-size: 17px; line-height: 1.75; margin-bottom: 32px; max-width: 52ch; }
+    .hero-ctas { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 36px; }
+    .hero-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .stat-box {
+      padding: 16px 18px; border-radius: 14px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.03);
+    }
+    .stat-box dt { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 3px; }
+    .stat-box dd { font-size: 12px; color: var(--muted); margin: 0; }
+
+    .hero-panel {
+      border-radius: 24px; border: 1px solid var(--line);
+      background: rgba(9,17,32,0.85); overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    .hero-panel-bar {
+      display: flex; align-items: center; gap: 8px;
+      padding: 12px 16px; border-bottom: 1px solid var(--line);
+      font-size: 12px; font-weight: 600; color: var(--muted);
+      font-family: var(--font-mono);
+    }
+    .dot { width: 10px; height: 10px; border-radius: 50%; }
+    .dot-green { background: var(--green); box-shadow: 0 0 8px rgba(69,252,168,0.5); }
+    .dot-yellow { background: #fbbf24; }
+    .dot-red { background: var(--red); }
+    .hero-image, .preview-image {
+      width: 100%; object-fit: cover;
+      background: var(--bg-elevated);
+      min-height: 260px;
+    }
+
+    /* ── SECTION COMMONS ── */
+    section { position: relative; z-index: 1; }
+    .section-tag {
+      font-family: var(--font-mono); font-size: 11px; font-weight: 700;
+      color: var(--accent); letter-spacing: 0.14em; text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .section-heading { font-size: clamp(1.8rem, 3vw, 2.8rem); line-height: 1.06; margin-bottom: 14px; }
+    .section-sub { color: var(--muted); font-size: 16px; line-height: 1.75; max-width: 60ch; }
+    .accent-text { color: var(--accent); }
+    .divider { height: 1px; background: rgba(148,163,184,0.08); margin: 0; }
+
+    /* ── PLATFORM STRIP ── */
+    .platform-section { padding: 48px 0 56px; }
+    .platform-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .info-card {
+      padding: 32px; border-radius: 22px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.03);
+      opacity: 0; transform: translateY(16px);
+      transition: opacity 0.45s ease, transform 0.45s ease;
+    }
+    .info-card.visible { opacity: 1; transform: translateY(0); }
+    .info-card.accent-card {
+      background: linear-gradient(135deg, rgba(35,200,255,0.10), rgba(10,132,255,0.05));
+      border-color: rgba(35,200,255,0.2);
+    }
+    .card-label {
+      font-family: var(--font-mono); font-size: 11px; font-weight: 700;
+      color: var(--accent); letter-spacing: 0.12em; text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+    .info-card h2 { font-size: clamp(1.4rem, 2vw, 1.9rem); margin-bottom: 10px; }
+    .info-card p { color: var(--muted); font-size: 15px; line-height: 1.7; }
+
+    /* ── PROBLEM ── */
+    .problem-section { padding: 72px 0 64px; }
+    .pain-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 16px; margin: 36px 0 48px;
+    }
+    .pain-card {
+      padding: 24px; border-radius: 18px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.025);
+      opacity: 0; transform: translateY(16px);
+      transition: opacity 0.4s, transform 0.4s, border-color 0.25s, background 0.25s;
+    }
+    .pain-card.visible { opacity: 1; transform: translateY(0); }
+    .pain-card:hover { border-color: rgba(248,113,113,0.35); background: rgba(248,113,113,0.04); transform: translateY(-3px); }
+    .pain-icon { font-size: 22px; margin-bottom: 10px; }
+    .pain-card strong { display: block; font-size: 14px; color: var(--text); margin-bottom: 6px; font-weight: 700; }
+    .pain-card p { color: var(--muted); font-size: 13px; line-height: 1.5; }
+
+    /* ── WORKFLOW COMPARE ── */
+    .workflow-compare {
+      display: grid; grid-template-columns: 1fr 48px 1fr;
+      border: 1px solid rgba(148,163,184,0.12);
+      border-radius: 22px; overflow: hidden;
+      background: rgba(8,16,32,0.7);
+    }
+    .workflow-col { padding: 36px 30px; }
+    .workflow-badge {
+      display: inline-block; padding: 4px 12px; border-radius: 6px;
+      font-size: 10px; font-weight: 800; letter-spacing: 0.12em;
+      text-transform: uppercase; margin-bottom: 16px;
+      font-family: var(--font-mono);
+    }
+    .badge-legacy { background: rgba(248,113,113,0.12); color: var(--red); border: 1px solid rgba(248,113,113,0.25); }
+    .badge-modern { background: rgba(35,200,255,0.10); color: var(--accent); border: 1px solid rgba(35,200,255,0.22); }
+    .workflow-col h3 { font-size: 19px; font-weight: 700; margin-bottom: 22px; }
+    .workflow-steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 14px; }
+    .workflow-steps li {
+      display: flex; align-items: flex-start; gap: 12px;
+      font-size: 14px; color: var(--muted); line-height: 1.45;
+      opacity: 0; transform: translateX(-8px);
+      transition: opacity 0.35s, transform 0.35s;
+    }
+    .workflow-steps li.step-visible { opacity: 1; transform: translateX(0); }
+    .step-num {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 28px; height: 28px; border-radius: 50%;
+      font-size: 12px; font-weight: 700; flex-shrink: 0; font-family: var(--font-mono);
+    }
+    .step-num--red { background: rgba(248,113,113,0.12); border: 1.5px solid rgba(248,113,113,0.3); color: var(--red); }
+    .step-num--cyan { background: rgba(35,200,255,0.12); border: 1.5px solid rgba(35,200,255,0.3); color: var(--accent); }
+    .step-slow { color: var(--red); font-weight: 700; font-family: var(--font-mono); }
+    .step-fast { color: var(--green); font-weight: 700; font-family: var(--font-mono); }
+    .workflow-divider {
+      display: flex; align-items: center; justify-content: center;
+      border-left: 1px solid rgba(148,163,184,0.1);
+      border-right: 1px solid rgba(148,163,184,0.1);
+      background: rgba(255,255,255,0.02);
+    }
+    .vs-badge {
+      width: 34px; height: 34px; border-radius: 50%;
+      background: var(--panel-strong); border: 1px solid var(--line);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; font-weight: 800; color: var(--muted);
+      font-family: var(--font-mono);
+    }
+
+    /* ── SOLUTION ── */
+    .solution-section { padding: 72px 0 60px; }
+    .solution-intro { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-bottom: 48px; align-items: start; }
+    .solution-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .sol-card {
+      padding: 28px; border-radius: 20px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.025);
+      opacity: 0; transform: translateY(16px);
+      transition: opacity 0.4s, transform 0.4s, border-color 0.25s, background 0.25s;
+    }
+    .sol-card.visible { opacity: 1; transform: translateY(0); }
+    .sol-card:hover { border-color: rgba(35,200,255,0.3); background: rgba(35,200,255,0.05); transform: translateY(-3px); }
+    .sol-icon {
+      width: 46px; height: 46px; border-radius: 13px;
+      background: rgba(35,200,255,0.10); border: 1px solid rgba(35,200,255,0.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 21px; margin-bottom: 14px;
+    }
+    .sol-card strong { display: block; font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+    .sol-card p { color: var(--muted); font-size: 13px; line-height: 1.6; }
+
+    /* ── CAPABILITIES ── */
+    .capabilities-section { padding: 72px 0 60px; }
+    .feature-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px; margin-top: 36px;
+    }
+    .card {
+      padding: 22px; border-radius: 18px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.025);
+      opacity: 0; transform: translateY(16px);
+      transition: opacity 0.4s, transform 0.4s, border-color 0.25s, background 0.25s;
+    }
+    .card.visible { opacity: 1; transform: translateY(0); }
+    .card:hover { transform: translateY(-3px); border-color: rgba(35,200,255,0.3); background: rgba(35,200,255,0.05); }
+    .card strong { display: block; font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 7px; }
+    .card p { color: var(--muted); font-size: 13px; line-height: 1.55; margin: 0; }
+
+    /* ── ARCHITECTURE ── */
+    .architecture-section { padding: 72px 0 64px; }
+    .arch-wrapper {
+      margin-top: 44px;
+      background: rgba(8,16,34,0.75);
+      border: 1px solid rgba(35,200,255,0.12);
+      border-radius: 22px; padding: 28px 24px 24px;
+    }
+    .arch-pipeline-scroll { overflow-x: auto; padding-bottom: 4px; }
+    .arch-pipeline-scroll::-webkit-scrollbar { height: 4px; }
+    .arch-pipeline-scroll::-webkit-scrollbar-thumb { background: rgba(35,200,255,0.2); border-radius: 4px; }
+    .arch-pipeline-row {
+      display: flex; align-items: flex-start;
+      min-width: max-content; padding: 8px 0 4px;
+    }
+    .arch-node { display: flex; flex-direction: column; align-items: center; position: relative; flex-shrink: 0; }
+    .arch-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); margin-bottom: 10px; box-shadow: 0 0 8px rgba(69,252,168,0.5); z-index: 1; }
+    .arch-dot--cyan { background: var(--accent); box-shadow: 0 0 10px rgba(35,200,255,0.6); }
+    .arch-h-line {
+      position: absolute; top: 3px; height: 2px;
+      border-top: 1px dashed rgba(35,200,255,0.22);
+      pointer-events: none;
+      left: calc(50% + 55px); right: -26px;
+    }
+    .arch-node-box {
+      width: 128px; padding: 16px 12px; border-radius: 14px;
+      border: 1px solid rgba(148,163,184,0.16);
+      background: rgba(14,24,48,0.9); text-align: center;
+      margin-right: 26px;
+      transition: border-color 0.25s, transform 0.25s;
+      opacity: 0; transform: translateY(14px);
+    }
+    .arch-node-box.visible { opacity: 1; transform: translateY(0); }
+    .arch-node-box:hover { border-color: rgba(35,200,255,0.35); transform: translateY(-3px); }
+    .arch-node--ai .arch-node-box { border-color: rgba(35,200,255,0.4); background: rgba(35,200,255,0.08); box-shadow: 0 0 20px rgba(35,200,255,0.1); }
+    .arch-node--last .arch-node-box { margin-right: 0; }
+    .arch-icon-wrap {
+      width: 40px; height: 40px; border-radius: 11px;
+      background: rgba(35,200,255,0.09); border: 1px solid rgba(35,200,255,0.18);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; margin: 0 auto 9px;
+    }
+    .arch-icon-wrap--ai { background: rgba(35,200,255,0.18); border-color: rgba(35,200,255,0.38); }
+    .arch-node-box strong { display: block; font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 3px; }
+    .arch-node-box span { font-size: 10px; color: var(--muted); line-height: 1.3; }
+    .arch-v-connector { display: flex; justify-content: center; padding: 14px 0; }
+    .arch-v-line { width: 1px; height: 28px; border-left: 2px dashed rgba(35,200,255,0.22); }
+    .arch-outputs-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .arch-output-card {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 20px; border-radius: 14px;
+      border: 1px solid rgba(148,163,184,0.12); background: rgba(14,24,48,0.8);
+      transition: transform 0.25s; opacity: 0; transform: translateY(14px);
+    }
+    .arch-output-card.visible { opacity: 1; transform: translateY(0); }
+    .arch-output-card:hover { transform: translateY(-3px); }
+    .arch-output-card--cyan { border-color: rgba(35,200,255,0.25); background: rgba(35,200,255,0.05); }
+    .arch-output-card--purple { border-color: rgba(192,132,252,0.25); background: rgba(192,132,252,0.05); }
+    .arch-output-card--green { border-color: rgba(69,252,168,0.25); background: rgba(69,252,168,0.05); }
+    .arch-output-left { display: flex; align-items: center; gap: 14px; }
+    .arch-output-icon {
+      width: 40px; height: 40px; border-radius: 11px;
+      background: rgba(35,200,255,0.10); border: 1px solid rgba(35,200,255,0.22);
+      display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0;
+    }
+    .arch-output-card--purple .arch-output-icon { background: rgba(192,132,252,0.1); border-color: rgba(192,132,252,0.25); }
+    .arch-output-card--green .arch-output-icon { background: rgba(69,252,168,0.09); border-color: rgba(69,252,168,0.25); }
+    .arch-output-card strong { display: block; font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
+    .arch-output-card span { font-size: 11px; color: var(--muted); }
+    .arch-output-bell { font-size: 18px; opacity: 0.6; }
+    .bell--cyan { color: var(--accent); }
+    .bell--purple { color: var(--purple); }
+    .bell--green { color: var(--green); }
+
+    /* ── CHATBOT ── */
+    .chatbot-section { padding: 72px 0 64px; }
+    .chatbot-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 52px; align-items: start; }
+    .chatbot-copy h2 { font-size: clamp(1.8rem, 3vw, 2.6rem); margin-bottom: 14px; }
+    .chatbot-copy p { color: var(--muted); font-size: 15px; line-height: 1.75; margin-bottom: 24px; }
+    .chatbot-prompts { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 0; }
+    .prompt-pill {
+      padding: 7px 13px; border-radius: 999px;
+      border: 1px solid rgba(35,200,255,0.2);
+      background: rgba(35,200,255,0.06); color: var(--accent);
+      font-size: 12px; font-weight: 600; cursor: pointer;
+      transition: background 0.2s, border-color 0.2s, color 0.2s;
+    }
+    .prompt-pill:hover, .prompt-pill.pill-active { background: rgba(35,200,255,0.14); border-color: rgba(35,200,255,0.42); color: var(--text); }
+    .chat-window { border-radius: 22px; border: 1px solid var(--line); background: rgba(9,17,32,0.92); overflow: hidden; box-shadow: var(--shadow); }
+    .chat-header {
+      display: flex; align-items: center; gap: 10px;
+      padding: 13px 16px; border-bottom: 1px solid var(--line);
+      font-size: 13px; font-weight: 700; color: var(--text);
+    }
+    .online-badge { margin-left: auto; color: var(--green); font-size: 11px; font-weight: 700; font-family: var(--font-mono); }
+    .chat-messages {
+      padding: 18px 16px; display: flex; flex-direction: column;
+      gap: 14px; max-height: 340px; overflow-y: auto; scroll-behavior: smooth;
+    }
+    .chat-messages::-webkit-scrollbar { width: 4px; }
+    .chat-messages::-webkit-scrollbar-thumb { background: rgba(35,200,255,0.2); border-radius: 4px; }
+    .chat-msg { padding: 13px 15px; border-radius: 14px; font-size: 13px; line-height: 1.6; max-width: 92%; }
+    .chat-msg--user { background: rgba(35,200,255,0.09); border: 1px solid rgba(35,200,255,0.18); color: var(--text); align-self: flex-end; border-bottom-right-radius: 5px; }
+    .chat-msg--ai { background: rgba(255,255,255,0.04); border: 1px solid var(--line); color: var(--muted); align-self: flex-start; border-bottom-left-radius: 5px; }
+    .chat-msg--new { animation: msgIn 0.3s ease forwards; }
+    @keyframes msgIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    .ai-label { display: block; font-size: 10px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; font-family: var(--font-mono); }
+    .chat-msg code { background: rgba(35,200,255,0.12); color: var(--accent); padding: 2px 6px; border-radius: 5px; font-size: 12px; font-family: var(--font-mono); }
+    .tag-mal { color: var(--red); font-weight: 700; }
+    .chat-typing .dots span { display: inline-block; animation: blink 1.2s infinite; font-size: 18px; line-height: 1; color: var(--accent); }
+    .chat-typing .dots span:nth-child(2) { animation-delay: 0.2s; }
+    .chat-typing .dots span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes blink { 0%,80%,100% { opacity: 0.2; } 40% { opacity: 1; } }
+    /* ── chatbot workflow ── */
+    .chatbot-workflow {
+      margin-top: 40px; padding: 28px;
+      border-radius: 20px; border: 1px solid var(--line);
+      background: rgba(8,16,34,0.6);
+    }
+    .chatbot-workflow h3 { font-size: 17px; margin-bottom: 18px; }
+    .cw-steps { display: flex; flex-direction: column; gap: 12px; }
+    .cw-step { display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--muted); }
+    .cw-step-num {
+      width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
+      background: rgba(35,200,255,0.1); border: 1px solid rgba(35,200,255,0.25);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 700; color: var(--accent); font-family: var(--font-mono);
+    }
+
+    /* ── PREVIEW ── */
+    .preview-section { padding: 24px 0 48px; }
+    .preview-inner { display: grid; grid-template-columns: 1fr 1.1fr; gap: 40px; align-items: center; }
+    .preview-copy h2 { font-size: clamp(1.6rem, 2.5vw, 2.2rem); margin-bottom: 12px; }
+    .preview-copy p { color: var(--muted); font-size: 15px; line-height: 1.7; }
+    .preview-image { border-radius: 18px; border: 1px solid rgba(148,163,184,0.1); box-shadow: var(--shadow); }
+
+    /* ── TEAM ── */
+    .team-section { padding: 72px 0 64px; }
+    .team-intro { margin-bottom: 44px; }
+    .team-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .team-card {
+      padding: 28px; border-radius: 22px;
+      border: 1px solid var(--line);
+      background: linear-gradient(160deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
+      box-shadow: var(--shadow); overflow: hidden; position: relative;
+      opacity: 0; transform: translateY(16px);
+      transition: opacity 0.45s, transform 0.45s, border-color 0.25s;
+    }
+    .team-card.visible { opacity: 1; transform: translateY(0); }
+    .team-card:hover { transform: translateY(-4px); border-color: rgba(35,200,255,0.28); }
+    .team-card-top { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
+    .avatar {
+      width: 52px; height: 52px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-display); font-size: 16px; font-weight: 800;
+      color: var(--accent); flex-shrink: 0; position: relative;
+    }
+    .avatar-cyan { background: linear-gradient(135deg, rgba(35,200,255,0.22), rgba(10,132,255,0.12)); border: 1px solid rgba(35,200,255,0.3); color: var(--accent); }
+    .avatar-blue { background: linear-gradient(135deg, rgba(10,132,255,0.22), rgba(10,132,255,0.1)); border: 1px solid rgba(10,132,255,0.3); color: #5aadff; }
+    .avatar-teal { background: linear-gradient(135deg, rgba(69,252,168,0.18), rgba(69,252,168,0.08)); border: 1px solid rgba(69,252,168,0.28); color: var(--green); }
+    .member-name { font-size: 16px; font-weight: 700; color: var(--text); font-family: var(--font-display); letter-spacing: -0.02em; margin-bottom: 2px; }
+    .member-id { font-size: 12px; color: var(--muted); font-family: var(--font-mono); }
+    .member-tags { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 14px; }
+    .tag {
+      padding: 4px 10px; border-radius: 999px;
+      border: 1px solid var(--line); background: rgba(255,255,255,0.04);
+      font-size: 11px; font-weight: 600; color: var(--muted);
+    }
+
+    /* Supervisor card */
+    .supervisors-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px; }
+    .supervisor-card {
+      padding: 22px 26px; border-radius: 18px;
+      border: 1px solid rgba(35,200,255,0.14);
+      background: rgba(35,200,255,0.04);
+      display: flex; align-items: center; gap: 16px;
+      opacity: 0; transform: translateY(16px);
+      transition: opacity 0.45s, transform 0.45s;
+    }
+    .supervisor-card.visible { opacity: 1; transform: translateY(0); }
+    .sup-icon {
+      width: 44px; height: 44px; border-radius: 12px; flex-shrink: 0;
+      background: rgba(35,200,255,0.1); border: 1px solid rgba(35,200,255,0.22);
+      display: flex; align-items: center; justify-content: center; font-size: 18px;
+    }
+    .sup-label { font-size: 10px; font-weight: 700; color: var(--accent); letter-spacing: 0.12em; text-transform: uppercase; font-family: var(--font-mono); margin-bottom: 4px; }
+    .sup-name { font-size: 15px; font-weight: 700; color: var(--text); font-family: var(--font-display); margin-bottom: 2px; }
+    .sup-title { font-size: 12px; color: var(--muted); line-height: 1.4; }
+
+    /* card glow */
+    .card-glow { position: absolute; bottom: -50px; right: -50px; width: 130px; height: 130px; border-radius: 50%; opacity: 0.35; pointer-events: none; filter: blur(30px); }
+    .card-glow--cyan { background: rgba(35,200,255,0.4); }
+    .card-glow--blue { background: rgba(10,132,255,0.4); }
+    .card-glow--teal { background: rgba(69,252,168,0.28); }
+
+    /* ── FOOTER ── */
+    .site-footer { padding: 28px 0 22px; border-top: 1px solid rgba(148,163,184,0.1); margin-top: 20px; }
+    .footer-inner { display: flex; justify-content: space-between; align-items: center; color: var(--muted); font-size: 13px; flex-wrap: wrap; gap: 10px; }
+    .footer-brand { font-family: var(--font-display); font-weight: 700; color: var(--text); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1020px) {
+      .team-grid { grid-template-columns: 1fr 1fr; }
+      .solution-cards { grid-template-columns: 1fr 1fr; }
+      .chatbot-inner { grid-template-columns: 1fr; }
+      .arch-outputs-row { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 860px) {
+      .hero-inner { grid-template-columns: 1fr; gap: 36px; }
+      .platform-grid { grid-template-columns: 1fr; }
+      .preview-inner { grid-template-columns: 1fr; }
+      .hero-stats { grid-template-columns: repeat(3, 1fr); }
+      .workflow-compare { grid-template-columns: 1fr; border-radius: 18px; }
+      .workflow-divider { border-left: none; border-right: none; border-top: 1px solid rgba(148,163,184,0.1); border-bottom: 1px solid rgba(148,163,184,0.1); padding: 14px 0; }
+      .supervisors-grid { grid-template-columns: 1fr; }
+      .solution-intro { grid-template-columns: 1fr; gap: 24px; }
+    }
+    @media (max-width: 640px) {
+      .container { padding: 0 16px; }
+      .hero { padding: 48px 0 32px; }
+      .nav { display: none; }
+      .hero-copy h1 { font-size: 2.1rem; }
+      .hero-stats { grid-template-columns: 1fr; gap: 10px; }
+      .team-grid { grid-template-columns: 1fr; }
+      .solution-cards { grid-template-columns: 1fr; }
+      .hero-ctas .btn { width: 100%; text-align: center; }
+      .footer-inner { flex-direction: column; text-align: center; }
+    }
+  </style>
 </head>
 <body>
+
   <header class="site-header">
     <div class="container header-inner">
-      <a class="logo" href="#top" aria-label="SOC-Mate home">
-        <img class="logo-mark" src="assets/logo-preview.png" alt="SOC-Mate logo" />
+      <a class="logo" href="#top">
+        <div class="logo-icon">SM</div>
         <span>SOC‑Mate</span>
       </a>
       <nav class="nav">
         <a class="nav-link" href="#platform">Platform</a>
         <a class="nav-link" href="#problem">Problem</a>
+        <a class="nav-link" href="#solution">Solution</a>
         <a class="nav-link" href="#capabilities">Capabilities</a>
         <a class="nav-link" href="#architecture">Architecture</a>
         <a class="nav-link" href="#chatbot">AI Assistant</a>
-        <a class="nav-link" href="#preview">Preview</a>
         <a class="nav-link" href="#team">Team</a>
-        <a class="btn btn-outline" href="#contact">Request demo</a>
+        <a class="btn btn-outline" href="#platform">Request demo</a>
       </nav>
     </div>
   </header>
@@ -36,351 +545,446 @@
     <section class="hero">
       <div class="container hero-inner">
         <div class="hero-copy">
-          <p class="eyebrow">SOC‑Mate — Intelligent Analyst For SOC</p>
-          <h1>See every alert, feed, ticket and chatbot in one focused SOC workspace.</h1>
-          <p class="lead">SOC-Mate gives analysts a clear command surface for triage, threat intelligence, reporting, and incident handling without the noise of a crowded toolchain.</p>
+          <p class="eyebrow">// SOC‑Mate · Intelligent Analyst</p>
+          <h1>See every alert, feed, ticket and chatbot in one <span>focused SOC workspace</span>.</h1>
+          <p class="lead">SOC-Mate is an AI-powered assistant platform for SOC analysts — automating triage, enrichment, rule generation, and incident handling without the noise of a crowded toolchain.</p>
           <div class="hero-ctas">
-            <a class="btn btn-primary" href="#preview">Explore preview</a>
-            <a class="btn btn-outline" href="https://soc-mate-dashboard.vercel.app/" target="_blank" rel="noreferrer">Open reference</a>
+            <a class="btn btn-primary" href="#architecture">Explore platform</a>
+            <a class="btn btn-outline" href="https://soc-mate-dashboard.vercel.app/" target="_blank" rel="noreferrer">Open live reference ↗</a>
           </div>
-          <dl class="hero-stats" aria-label="SOC-Mate highlights">
-            <div><dt>Unified views</dt><dd>Alerts, CTI, tickets</dd></div>
-            <div><dt>Analyst-first</dt><dd>Fast triage workflows</dd></div>
-            <div><dt>Operational clarity</dt><dd>Built for daily SOC work</dd></div>
+          <dl class="hero-stats">
+            <div class="stat-box"><dt>Unified views</dt><dd>Alerts, CTI, tickets</dd></div>
+            <div class="stat-box"><dt>Analyst-first</dt><dd>Fast triage workflows</dd></div>
+            <div class="stat-box"><dt>AI-augmented</dt><dd>Under 2 min per alert</dd></div>
           </dl>
         </div>
         <div class="hero-panel">
-          <div class="hero-panel-top">
-            <span class="status-dot"></span>
-            Live dashboard preview
+          <div class="hero-panel-bar">
+            <div class="dot dot-red"></div>
+            <div class="dot dot-yellow"></div>
+            <div class="dot dot-green"></div>
+            <span style="margin-left:6px">Live dashboard preview</span>
+            <span style="margin-left:auto;color:var(--green)">● LIVE</span>
           </div>
           <img class="hero-image" src="assets/demo.png" alt="SOC-Mate dashboard preview" />
         </div>
       </div>
     </section>
 
+    <div class="divider"></div>
+
     <!-- ── PLATFORM STRIP ── -->
-    <section id="platform" class="container strip-grid">
-      <article class="info-card accent-card">
-        <p class="card-label">Command center</p>
-        <h2>Built around the daily decisions analysts make.</h2>
-        <p>Monitor attack timelines, review threat context, and move from signal to action with a layout designed for speed.</p>
-      </article>
-      <article class="info-card">
-        <p class="card-label">Chat bot</p>
-        <h2>Keeping the analyst focused on a unified platform</h2>
-        <p>Handles generic queries and analysis queries which require analysis of IP, hash and URLs.</p>
-      </article>
+    <section id="platform" class="platform-section">
+      <div class="container">
+        <div class="platform-grid">
+          <article class="info-card accent-card">
+            <p class="card-label">Command center</p>
+            <h2>Built around the daily decisions analysts make.</h2>
+            <p>Monitor attack timelines, review threat context, and move from signal to action with a layout designed for speed — integrating SIEM, AI, and threat intelligence in one system.</p>
+          </article>
+          <article class="info-card">
+            <p class="card-label">AI Chatbot</p>
+            <h2>Keeping the analyst focused on a unified platform.</h2>
+            <p>Handles generic queries and deep analysis — IP reputation, hash lookups, URL scanning, MITRE mapping, and Wazuh rule generation — all in plain English.</p>
+          </article>
+        </div>
+      </div>
     </section>
 
-    <!-- ── THE REALITY / PROBLEM ── -->
-    <section id="problem" class="reality-section">
+    <div class="divider"></div>
+
+    <!-- ── PROBLEM ── -->
+    <section id="problem" class="problem-section">
       <div class="container">
-        <p class="section-eyebrow">// The reality</p>
+        <p class="section-tag">// The Reality</p>
         <h2 class="section-heading">SOC analysts are drowning in alerts</h2>
-        <p class="section-sub">Modern security teams face an impossible volume of work. The average analyst sees 4,484 alerts per day — and ignores 67% of them.</p>
+        <p class="section-sub">Modern security teams face an impossible volume of work. The average analyst sees 4,484 alerts per day — and ignores 67% of them. Delayed responses increase Mean Time to Detect (MTTD) and Mean Time to Respond (MTTR), exposing organizations to greater risk.</p>
 
         <div class="pain-grid">
-          <div class="pain-card"><div class="pain-icon"></div><strong>Alert Overload</strong><p>Thousands of SIEM alerts daily — analysts can't triage them all.</p></div>
-          <div class="pain-card"><div class="pain-icon"></div><strong>False Positives</strong><p>Endless noise drowns the signals that actually matter.</p></div>
-          <div class="pain-card"><div class="pain-icon"></div><strong>Slow Investigation</strong><p>Manual lookups across 6+ tools delay every response.</p></div>
-          <div class="pain-card"><div class="pain-icon"></div><strong>Tool Sprawl</strong><p>Disconnected SIEM, CTI, sandbox, ticketing — context lost.</p></div>
-          <div class="pain-card"><div class="pain-icon"></div><strong>Analyst Burnout</strong><p>Repetitive grunt work pushes talented analysts to quit.</p></div>
-          <div class="pain-card"><div class="pain-icon"></div><strong>No Context</strong><p>Raw alerts without enrichment leave teams guessing intent.</p></div>
+          <div class="pain-card"><div class="pain-icon">🔔</div><strong>Alert Fatigue</strong><p>SOC analysts face thousands of daily alerts, leading to mental exhaustion and missed critical threats.</p></div>
+          <div class="pain-card"><div class="pain-icon">⚡</div><strong>Manual Workload</strong><p>Incident triage, rule writing, and phishing analysis are done manually — consuming time and resources.</p></div>
+          <div class="pain-card"><div class="pain-icon">🔴</div><strong>High False Positives</strong><p>Traditional detection methods generate excessive false positives, diverting attention from real threats.</p></div>
+          <div class="pain-card"><div class="pain-icon">🧩</div><strong>Tool Overload</strong><p>Analysts switch between multiple disconnected tools, creating inefficiencies and slow response times.</p></div>
+          <div class="pain-card"><div class="pain-icon">😓</div><strong>Analyst Burnout</strong><p>Repetitive grunt work pushes talented analysts out of the field and degrades team morale.</p></div>
+          <div class="pain-card"><div class="pain-icon">🌫️</div><strong>No Context</strong><p>Raw alerts without enrichment leave teams guessing intent — investigation stalls, risk grows.</p></div>
         </div>
 
-        <!-- WORKFLOW COMPARE — styled like image 3 & 4 -->
+        <!-- WORKFLOW COMPARE -->
         <div class="workflow-compare">
           <div class="workflow-col">
             <span class="workflow-badge badge-legacy">LEGACY SOC</span>
             <h3>Traditional Workflow</h3>
             <ol class="workflow-steps">
-              <li><span class="step-num step-num--red">1</span><span>Alert fires → analyst pages</span></li>
-              <li><span class="step-num step-num--red">2</span><span>Open 6 tools, copy IoCs</span></li>
-              <li><span class="step-num step-num--red">3</span><span>Lookup VT, AbuseIPDB manually</span></li>
-              <li><span class="step-num step-num--red">4</span><span>Write ticket by hand</span></li>
-              <li><span class="step-num step-num--red">5</span><span>Draft email summary</span></li>
+              <li><span class="step-num step-num--red">1</span><span>Alert fires → analyst paged</span></li>
+              <li><span class="step-num step-num--red">2</span><span>Open 6 tools, copy IoCs manually</span></li>
+              <li><span class="step-num step-num--red">3</span><span>Lookup VirusTotal, AbuseIPDB by hand</span></li>
+              <li><span class="step-num step-num--red">4</span><span>Write ticket and summary manually</span></li>
+              <li><span class="step-num step-num--red">5</span><span>Draft email and escalate</span></li>
               <li><span class="step-num step-num--red">6</span><span class="step-slow">→ 45+ minutes per alert</span></li>
             </ol>
           </div>
-
-          <div class="workflow-divider">
-            <div class="vs-badge">VS</div>
-          </div>
-
+          <div class="workflow-divider"><div class="vs-badge">VS</div></div>
           <div class="workflow-col">
             <span class="workflow-badge badge-modern">SOC-MATE</span>
             <h3>AI-Augmented Workflow</h3>
             <ol class="workflow-steps">
-              <li><span class="step-num step-num--cyan">1</span><span>Alert fires → AI agent triggers</span></li>
-              <li><span class="step-num step-num--cyan">2</span><span>Auto-enriches with CTI feeds</span></li>
-              <li><span class="step-num step-num--cyan">3</span><span>MITRE mapping + risk scoring</span></li>
-              <li><span class="step-num step-num--cyan">4</span><span>Ticket auto-created in Jira</span></li>
-              <li><span class="step-num step-num--cyan">5</span><span>Email + dashboard updated</span></li>
+              <li><span class="step-num step-num--cyan">1</span><span>Alert fires → AI agent triggers automatically</span></li>
+              <li><span class="step-num step-num--cyan">2</span><span>Auto-enriches IoCs via CTI feeds</span></li>
+              <li><span class="step-num step-num--cyan">3</span><span>MITRE ATT&amp;CK mapping + risk scoring</span></li>
+              <li><span class="step-num step-num--cyan">4</span><span>Jira ticket auto-created and assigned</span></li>
+              <li><span class="step-num step-num--cyan">5</span><span>Email notification + dashboard updated</span></li>
               <li><span class="step-num step-num--cyan">6</span><span class="step-fast">→ under 2 minutes</span></li>
             </ol>
           </div>
         </div>
-
       </div>
     </section>
 
-    <!-- ── CAPABILITIES ── -->
-    <section id="capabilities" class="features">
+    <div class="divider"></div>
+
+    <!-- ── SOLUTION ── -->
+    <section id="solution" class="solution-section">
       <div class="container">
-        <p class="section-eyebrow">// The solution</p>
-        <h2>One platform. Every SOC capability.</h2>
-        <p>SOC-Mate unifies SIEM, threat intelligence, AI reasoning, and incident response into a single intelligent workflow.</p>
-        <div class="feature-grid">
-          <div class="card"><strong>AI Alert Analysis</strong><p>LLM-powered triage that explains every alert in plain language.</p></div>
-          <div class="card"><strong>Threat Intel Enrichment</strong><p>Live IoC enrichment from VirusTotal, AbuseIPDB, URLhaus &amp; MISP.</p></div>
-          <div class="card"><strong>MITRE ATT&amp;CK Mapping</strong><p>Auto-classify every incident to tactics, techniques &amp; sub-techniques.</p></div>
-          <div class="card"><strong>SIEM Rule Generation</strong><p>Generate Wazuh rules from natural language in seconds.</p></div>
-          <div class="card"><strong>Email Notifications</strong><p>Rich incident summaries delivered to the right responders.</p></div>
-          <div class="card"><strong>AI Chatbot Assistant</strong><p>Ask questions, run lookups, generate rules — conversationally.</p></div>
-          <div class="card"><strong>Jira Ticketing</strong><p>Auto-create, assign, and track incident tickets end-to-end.</p></div>
-          <div class="card"><strong>Automated Reporting</strong><p>On-demand investigation &amp; shift-handover reports.</p></div>
-          <div class="card"><strong>URL / IP / File Scanning</strong><p>Multi-engine scans with consolidated verdicts.</p></div>
-          <div class="card"><strong>SSL Certificate Analysis</strong><p>Detect expired, weak, or impersonating certificates.</p></div>
-          <div class="card"><strong>Real-Time CTI Feeds</strong><p>Always-on threat intelligence streams across the platform.</p></div>
-          <div class="card"><strong>Dashboard Notifications</strong><p>Live SOC dashboard with incident timelines &amp; analyst activity.</p></div>
+        <div class="solution-intro">
+          <div>
+            <p class="section-tag">// The Solution</p>
+            <h2 class="section-heading">One platform.<br>Every SOC capability.</h2>
+          </div>
+          <div style="padding-top:8px">
+            <p class="section-sub">SOC-Mate unifies SIEM, threat intelligence, AI reasoning, and incident response into a single intelligent workflow — automating the grunt work so analysts focus on what matters.</p>
+          </div>
+        </div>
+
+        <div class="solution-cards">
+          <div class="sol-card">
+            <div class="sol-icon">⚙️</div>
+            <strong>Workflow Automation</strong>
+            <p>Reduce manual work by automating triage, enrichment, and rule generation. Let the AI handle the repetitive steps.</p>
+          </div>
+          <div class="sol-card">
+            <div class="sol-icon">🔍</div>
+            <strong>Real-Time Detection</strong>
+            <p>Detect and analyze alerts instantly with AI-augmented analysis. Wazuh SIEM events flow directly into the pipeline.</p>
+          </div>
+          <div class="sol-card">
+            <div class="sol-icon">🔗</div>
+            <strong>Tool Integration</strong>
+            <p>Seamlessly connect SIEM, CTI, and scanning tools into one ecosystem. No more context-switching between six tabs.</p>
+          </div>
+          <div class="sol-card">
+            <div class="sol-icon">🤖</div>
+            <strong>User Assistance</strong>
+            <p>Enable analysts to query data, generate rules, and access reports via the embedded chatbot — in plain English.</p>
+          </div>
+          <div class="sol-card">
+            <div class="sol-icon">📡</div>
+            <strong>Cyber Threat Intelligence</strong>
+            <p>Provide always-on, up-to-date CTI feeds on the interface — VirusTotal, AbuseIPDB, MISP, URLhaus and more.</p>
+          </div>
+          <div class="sol-card">
+            <div class="sol-icon">📄</div>
+            <strong>Detailed Reporting</strong>
+            <p>Produce structured reports suitable for analyst handovers and executive consumption — generated on demand.</p>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- ── ARCHITECTURE — matches image 2 ── -->
+    <div class="divider"></div>
+
+    <!-- ── CAPABILITIES ── -->
+    <section id="capabilities" class="capabilities-section">
+      <div class="container">
+        <p class="section-tag">// Full Capabilities</p>
+        <h2 class="section-heading">Everything a modern SOC needs</h2>
+        <p class="section-sub" style="margin-top:10px">From AI alert analysis to automated ticketing — SOC-Mate covers the full security operations workflow.</p>
+        <div class="feature-grid">
+          <div class="card"><strong>AI Alert Analysis</strong><p>LLM-powered triage that explains every Wazuh SIEM alert in plain language with actionable context.</p></div>
+          <div class="card"><strong>Threat Intel Enrichment</strong><p>Live IoC enrichment from VirusTotal, AbuseIPDB, URLhaus &amp; MISP — automatic on every alert.</p></div>
+          <div class="card"><strong>MITRE ATT&amp;CK Mapping</strong><p>Auto-classify every incident to tactics, techniques &amp; sub-techniques for structured reporting.</p></div>
+          <div class="card"><strong>SIEM Rule Generation</strong><p>Generate Wazuh / Sigma rules from natural language in seconds, ready to deploy.</p></div>
+          <div class="card"><strong>Email Notifications</strong><p>Rich incident summaries delivered instantly to the right responders on every alert.</p></div>
+          <div class="card"><strong>AI Chatbot Assistant</strong><p>Ask questions, run lookups, generate rules, and classify threats — conversationally.</p></div>
+          <div class="card"><strong>Jira Ticketing</strong><p>Auto-create, assign, and track incident tickets end-to-end with no manual input.</p></div>
+          <div class="card"><strong>Automated Reporting</strong><p>On-demand investigation reports and shift-handover summaries — structured and exportable.</p></div>
+          <div class="card"><strong>URL / IP / File Scanning</strong><p>Multi-engine scans with consolidated verdicts across all major threat intelligence sources.</p></div>
+          <div class="card"><strong>SSL Certificate Analysis</strong><p>Detect expired, weak, or impersonating certificates before they become incidents.</p></div>
+          <div class="card"><strong>Real-Time CTI Feeds</strong><p>Always-on threat intelligence streams surfaced across the platform for analyst awareness.</p></div>
+          <div class="card"><strong>Cyber News Feed</strong><p>Monitor and process multiple cybersecurity news sources for analyst situational awareness.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ── ARCHITECTURE ── -->
     <section id="architecture" class="architecture-section">
       <div class="container">
-        <p class="section-eyebrow">// Architecture</p>
+        <p class="section-tag">// Architecture</p>
         <h2 class="section-heading">Inside the <span class="accent-text">SOC-Mate</span> pipeline</h2>
-        <p class="section-sub">From raw SIEM event to enriched intel, AI reasoning, automated response, and analyst notification — fully orchestrated.</p>
+        <p class="section-sub" style="margin-top:10px">From raw Wazuh SIEM event to enriched intel, AI reasoning, automated response, and analyst notification — fully orchestrated end-to-end.</p>
 
         <div class="arch-wrapper">
-          <!-- Horizontal scrollable pipeline row -->
           <div class="arch-pipeline-scroll">
             <div class="arch-pipeline-row">
-
               <div class="arch-node">
                 <div class="arch-dot"></div>
                 <div class="arch-node-box">
-                  <div class="arch-icon-wrap"><span></span></div>
+                  <div class="arch-icon-wrap">🛡️</div>
                   <strong>Wazuh SIEM</strong>
-                  <span>Detection</span>
+                  <span>Detection &amp; ingestion</span>
                 </div>
                 <div class="arch-h-line"></div>
               </div>
-
               <div class="arch-node">
                 <div class="arch-dot"></div>
                 <div class="arch-node-box">
-                  <div class="arch-icon-wrap"><span></span></div>
+                  <div class="arch-icon-wrap">📡</div>
                   <strong>CTI Feeds</strong>
                   <span>VirusTotal · MISP · AbuseIPDB</span>
                 </div>
                 <div class="arch-h-line"></div>
               </div>
-
               <div class="arch-node">
                 <div class="arch-dot"></div>
                 <div class="arch-node-box">
-                  <div class="arch-icon-wrap"><span></span></div>
+                  <div class="arch-icon-wrap">🔗</div>
                   <strong>Webhook</strong>
                   <span>Event ingest</span>
                 </div>
                 <div class="arch-h-line"></div>
               </div>
-
               <div class="arch-node arch-node--ai">
                 <div class="arch-dot arch-dot--cyan"></div>
                 <div class="arch-node-box">
-                  <div class="arch-icon-wrap arch-icon-wrap--ai"><span></span></div>
+                  <div class="arch-icon-wrap arch-icon-wrap--ai">🤖</div>
                   <strong>AI Agent</strong>
                   <span>Triage &amp; reasoning</span>
                 </div>
                 <div class="arch-h-line"></div>
               </div>
-
               <div class="arch-node">
                 <div class="arch-dot"></div>
                 <div class="arch-node-box">
-                  <div class="arch-icon-wrap"><span></span></div>
+                  <div class="arch-icon-wrap">🔬</div>
                   <strong>Security Tools</strong>
                   <span>Scanners · sandbox</span>
                 </div>
                 <div class="arch-h-line"></div>
               </div>
-
               <div class="arch-node">
                 <div class="arch-dot"></div>
                 <div class="arch-node-box">
-                  <div class="arch-icon-wrap"><span></span></div>
+                  <div class="arch-icon-wrap">📋</div>
                   <strong>Rule Generation</strong>
                   <span>Wazuh / Sigma</span>
                 </div>
                 <div class="arch-h-line"></div>
               </div>
-
               <div class="arch-node">
                 <div class="arch-dot"></div>
                 <div class="arch-node-box">
-                  <div class="arch-icon-wrap"><span></span></div>
+                  <div class="arch-icon-wrap">📄</div>
                   <strong>Reporting</strong>
                   <span>Auto-generated</span>
                 </div>
                 <div class="arch-h-line"></div>
               </div>
-
               <div class="arch-node arch-node--last">
                 <div class="arch-dot"></div>
                 <div class="arch-node-box">
-                  <div class="arch-icon-wrap"></div>
+                  <div class="arch-icon-wrap">⚡</div>
                   <strong>AI Response</strong>
                   <span>Decision engine</span>
                 </div>
               </div>
-
             </div>
           </div>
 
-          <!-- Dashed vertical connector -->
-          <div class="arch-v-connector">
-            <div class="arch-v-line"></div>
-          </div>
+          <div class="arch-v-connector"><div class="arch-v-line"></div></div>
 
-          <!-- Output cards row — 3 wide cards -->
           <div class="arch-outputs-row">
             <div class="arch-output-card arch-output-card--cyan">
               <div class="arch-output-left">
-                <div class="arch-output-icon"></div>
-                <div>
-                  <strong>Dashboard</strong>
-                  <span>Real-time delivery</span>
-                </div>
+                <div class="arch-output-icon">🖥️</div>
+                <div><strong>Dashboard</strong><span>Real-time delivery</span></div>
               </div>
-              <div class="arch-output-bell bell--cyan"></div>
+              <div class="arch-output-bell bell--cyan">🔔</div>
             </div>
-
             <div class="arch-output-card arch-output-card--purple">
               <div class="arch-output-left">
-                <div class="arch-output-icon"></div>
-                <div>
-                  <strong>Email Alert</strong>
-                  <span>Real-time delivery</span>
-                </div>
+                <div class="arch-output-icon">📧</div>
+                <div><strong>Email Alert</strong><span>Real-time delivery</span></div>
               </div>
-              <div class="arch-output-bell bell--purple"></div>
+              <div class="arch-output-bell bell--purple">🔔</div>
             </div>
-
             <div class="arch-output-card arch-output-card--green">
               <div class="arch-output-left">
-                <div class="arch-output-icon"></div>
-                <div>
-                  <strong>Jira Ticket</strong>
-                  <span>Real-time delivery</span>
-                </div>
+                <div class="arch-output-icon">🎫</div>
+                <div><strong>Jira Ticket</strong><span>Real-time delivery</span></div>
               </div>
-              <div class="arch-output-bell bell--green"></div>
+              <div class="arch-output-bell bell--green">🔔</div>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ── AI CHATBOT ── -->
+    <div class="divider"></div>
+
+    <!-- ── CHATBOT ── -->
     <section id="chatbot" class="chatbot-section">
-      <div class="container chatbot-inner">
-        <div class="chatbot-copy">
-          <p class="section-eyebrow">// AI Assistant</p>
-          <h2>Talk to your SOC, not your tools</h2>
-          <p>The SOC-Mate chatbot is a conversational interface to your entire security stack. Ask, investigate, generate, classify — in plain English.</p>
-          <div class="chatbot-prompts">
-            <span class="prompt-pill">Analyze this suspicious IP</span>
-            <span class="prompt-pill">Generate Wazuh rule for brute force</span>
-            <span class="prompt-pill">Check this file hash</span>
-            <span class="prompt-pill">Classify this phishing email</span>
-            <span class="prompt-pill">Map this attack to MITRE ATT&amp;CK</span>
-          </div>
-        </div>
+      <div class="container">
+        <div class="chatbot-inner">
+          <div class="chatbot-copy">
+            <p class="section-tag">// AI Assistant</p>
+            <h2>Talk to your SOC, not your tools</h2>
+            <p>The SOC-Mate chatbot is a conversational interface to your entire security stack. Ask, investigate, generate, classify — in plain English. Handles generic queries and deep analysis, all within the unified platform.</p>
+            <div class="chatbot-prompts">
+              <span class="prompt-pill">Analyze this suspicious IP</span>
+              <span class="prompt-pill">Generate Wazuh rule for brute force</span>
+              <span class="prompt-pill">Check this file hash</span>
+              <span class="prompt-pill">Classify this phishing email</span>
+              <span class="prompt-pill">Map this attack to MITRE ATT&amp;CK</span>
+            </div>
 
-        <div class="chat-window">
-          <div class="chat-header">
-            <span class="status-dot"></span>
-            <strong>SOC-Mate AI Assistant</strong>
-            <span class="online-badge">● ONLINE</span>
+            <div class="chatbot-workflow">
+              <h3>🤖 Chatbot Workflow</h3>
+              <div class="cw-steps">
+                <div class="cw-step"><div class="cw-step-num">1</div><span>Analyst submits query via chatbot interface</span></div>
+                <div class="cw-step"><div class="cw-step-num">2</div><span>Query classified — generic or analysis type</span></div>
+                <div class="cw-step"><div class="cw-step-num">3</div><span>For analysis: IP, hash or URL sent to CTI APIs</span></div>
+                <div class="cw-step"><div class="cw-step-num">4</div><span>AI agent enriches, reasons, and generates response</span></div>
+                <div class="cw-step"><div class="cw-step-num">5</div><span>Structured reply returned to analyst in seconds</span></div>
+              </div>
+            </div>
           </div>
-          <div class="chat-messages">
-            <div class="chat-msg chat-msg--user">
-              Analyze this suspicious IP: 185.254.97.249
+
+          <div class="chat-window">
+            <div class="chat-header">
+              <div class="dot dot-green"></div>
+              <strong>SOC-Mate AI Assistant</strong>
+              <span class="online-badge">● ONLINE</span>
             </div>
-            <div class="chat-msg chat-msg--ai">
-              <span class="ai-label">SOC-Mate</span>
-              Reputation: <span class="tag-mal">malicious (87/100)</span>. Flagged by 14 vendors on VirusTotal, 96 reports on AbuseIPDB. Associated with C2 infrastructure for the Bumblebee loader. MITRE: <code>T1071.001</code>. Recommend block at perimeter and hunt for outbound 443 to this IP across past 30 days.
-            </div>
-            <div class="chat-msg chat-msg--user">
-              Generate a Wazuh rule for brute-force SSH attempts
-            </div>
-            <div class="chat-msg chat-msg--ai">
-              <span class="ai-label">SOC-Mate</span>
-              Created rule <code>SOCX-1650</code> — 5 failed authentications from same source within 60s triggers level 10 alert. Mapped to MITRE <code>T1110.001</code>. Ready to deploy to your Wazuh manager.
+            <div class="chat-messages" id="chatMessages">
+              <div class="chat-msg chat-msg--user">
+                Analyze this suspicious IP: 185.254.97.249
+              </div>
+              <div class="chat-msg chat-msg--ai">
+                <span class="ai-label">SOC-Mate</span>
+                Reputation: <span class="tag-mal">malicious (87/100)</span>. Flagged by 14 vendors on VirusTotal, 96 reports on AbuseIPDB. Associated with C2 infrastructure for the Bumblebee loader. MITRE: <code>T1071.001</code>. Recommend block at perimeter and hunt for outbound 443 to this IP across past 30 days.
+              </div>
+              <div class="chat-msg chat-msg--user">
+                Generate a Wazuh rule for brute-force SSH attempts
+              </div>
+              <div class="chat-msg chat-msg--ai">
+                <span class="ai-label">SOC-Mate</span>
+                Created rule <code>SOCX-1650</code> — 5 failed authentications from same source within 60s triggers level 10 alert. Mapped to MITRE <code>T1110.001</code>. Ready to deploy to your Wazuh manager.
+              </div>
             </div>
           </div>
         </div>
       </div>
     </section>
+
+    <div class="divider"></div>
 
     <!-- ── PREVIEW ── -->
-    <section id="preview" class="container preview-section">
-      <div class="preview-copy">
-        <p class="card-label">Operational view</p>
-        <h2>See the ticket queue, status, and response progress in one place.</h2>
-        <p>The lower preview pairs the dashboard screenshot with a compact summary of the work analysts need to move forward.</p>
+    <section id="preview" class="preview-section">
+      <div class="container">
+        <div class="preview-inner">
+          <div class="preview-copy">
+            <p class="card-label">Operational view</p>
+            <h2>See the ticket queue, status, and response progress in one place.</h2>
+            <p style="margin-top:12px">The dashboard pairs live alert timelines with ticket management, CTI feeds, and analyst activity — giving the full operational picture at a glance.</p>
+          </div>
+          <img class="preview-image" src="assets/demo2.png" alt="SOC-Mate tickets dashboard screenshot" />
+        </div>
       </div>
-      <img class="preview-image" src="assets/demo2.png" alt="SOC-Mate tickets dashboard screenshot" />
     </section>
+
+    <div class="divider"></div>
 
     <!-- ── TEAM ── -->
     <section id="team" class="team-section">
       <div class="container">
-        <p class="card-label team-eyebrow">// The builders</p>
-        <h2 class="team-heading">Meet the <span class="accent-text">team</span> behind SOC-Mate</h2>
+        <div class="team-intro">
+          <p class="card-label">// The Builders</p>
+          <h2 class="section-heading">Meet the <span class="accent-text">team</span> behind SOC-Mate</h2>
+          <p class="section-sub" style="margin-top:10px">Final Year Project — Department of Cyber-Security, NCSA, Air University Islamabad.</p>
+        </div>
 
         <div class="team-grid">
           <div class="team-card">
             <div class="team-card-top">
-              <div class="member-avatar"><span class="avatar-initials">MH</span><div class="avatar-ring"></div></div>
-              <div class="member-meta">
-                <h3 class="member-name">Muhammad Huzaifa</h3>
-                
+              <div class="avatar avatar-cyan">MH</div>
+              <div>
+                <div class="member-name">Muhammad Huzaifa</div>
+                <div class="member-id">221499</div>
               </div>
             </div>
-            
+            <div class="member-tags">
+              <span class="tag">Cyber-Security</span>
+              <span class="tag">AI Integration</span>
+              <span class="tag">SIEM</span>
+            </div>
             <div class="card-glow card-glow--cyan"></div>
           </div>
 
           <div class="team-card">
             <div class="team-card-top">
-              <div class="member-avatar member-avatar--blue"><span class="avatar-initials">AN</span><div class="avatar-ring"></div></div>
-              <div class="member-meta">
-                <h3 class="member-name">Amna Naeem</h3>
-                
+              <div class="avatar avatar-blue">AN</div>
+              <div>
+                <div class="member-name">Amna Naeem</div>
+                <div class="member-id">221573</div>
               </div>
             </div>
-          
+            <div class="member-tags">
+              <span class="tag">Cyber-Security</span>
+              <span class="tag">Threat Intelligence</span>
+              <span class="tag">CTI</span>
+            </div>
             <div class="card-glow card-glow--blue"></div>
           </div>
 
           <div class="team-card">
             <div class="team-card-top">
-              <div class="member-avatar member-avatar--teal"><span class="avatar-initials">SF</span><div class="avatar-ring"></div></div>
-              <div class="member-meta">
-                <h3 class="member-name">Saif</h3>
-                
+              <div class="avatar avatar-teal">SR</div>
+              <div>
+                <div class="member-name">Saif Ur Rehman</div>
+                <div class="member-id">221547</div>
               </div>
             </div>
-           
+            <div class="member-tags">
+              <span class="tag">Cyber-Security</span>
+              <span class="tag">SOC Automation</span>
+              <span class="tag">Backend</span>
+            </div>
             <div class="card-glow card-glow--teal"></div>
           </div>
         </div>
+
+        <!-- Supervisors -->
+        <h3 style="font-size:16px;margin:36px 0 16px;color:var(--muted);font-weight:600;font-family:var(--font-body);">Supervised by</h3>
+        <div class="supervisors-grid">
+          <div class="supervisor-card">
+            <div class="sup-icon">🎓</div>
+            <div>
+              <div class="sup-label">Academic Supervisor</div>
+              <div class="sup-name">Dr. Ghalib Asadullah Shah</div>
+              <div class="sup-title">Chair NCSA, Air University Islamabad</div>
+            </div>
+          </div>
+          <div class="supervisor-card">
+            <div class="sup-icon">🏢</div>
+            <div>
+              <div class="sup-label">Industrial Supervisor</div>
+              <div class="sup-name">Abdul Wahid Khan</div>
+              <div class="sup-title">President, ZIGRON</div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </section>
 
@@ -388,11 +992,90 @@
 
   <footer class="site-footer">
     <div class="container footer-inner">
-      <div>SOC-Mate landing page</div>
-      <div></div>
+      <div class="footer-brand">SOC‑Mate</div>
+      <div>Department of Cyber-Security · NCSA · Air University Islamabad</div>
     </div>
   </footer>
 
-  <script src="script.js"></script>
+  <script>
+    // Intersection observer for fade-in
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08 });
+
+    document.querySelectorAll(
+      '.info-card, .pain-card, .card, .sol-card, .team-card, .supervisor-card, .arch-node-box, .arch-output-card'
+    ).forEach(el => observer.observe(el));
+
+    // Staggered workflow steps
+    const stepObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const steps = entry.target.querySelectorAll('.workflow-steps li');
+          steps.forEach((step, i) => {
+            setTimeout(() => step.classList.add('step-visible'), i * 90);
+          });
+          stepObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.workflow-col').forEach(el => stepObserver.observe(el));
+
+    // Active nav links on scroll
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-link');
+    const scrollObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          navLinks.forEach(link => {
+            link.style.color = link.getAttribute('href') === '#' + entry.target.id ? 'var(--text)' : '';
+          });
+        }
+      });
+    }, { threshold: 0.4 });
+    sections.forEach(s => scrollObserver.observe(s));
+
+    // Chatbot pill click simulation
+    const pills = document.querySelectorAll('.prompt-pill');
+    const chatMessages = document.getElementById('chatMessages');
+    const responses = {
+      'Analyze this suspicious IP': ['Analyze this suspicious IP: 185.254.97.249', 'Reputation: <span class="tag-mal">malicious (87/100)</span>. Flagged by 14 vendors on VirusTotal, 96 reports on AbuseIPDB. Associated with C2 infrastructure for the Bumblebee loader. MITRE: <code>T1071.001</code>.'],
+      'Generate Wazuh rule for brute force': ['Generate a Wazuh rule for brute-force SSH', 'Created rule <code>SOCX-1650</code> — 5 failed authentications from same source within 60s triggers level 10 alert. Mapped to MITRE <code>T1110.001</code>. Ready to deploy.'],
+      'Check this file hash': ['Check hash: d41d8cd98f00b204e9800998ecf8427e', 'Hash is <span class="tag-mal">malicious</span>. Detected as Emotet dropper by 23/72 engines on VirusTotal. First seen 14 days ago. MITRE: <code>T1204.002</code>. Recommend immediate quarantine.'],
+      'Classify this phishing email': ['Classify this phishing email attachment', 'Classification: <span class="tag-mal">HIGH CONFIDENCE PHISHING</span>. Sender domain registered 3 days ago, SPF/DKIM failures detected, embedded link resolves to credential-harvesting page. MITRE: <code>T1566.001</code>.'],
+      'Map this attack to MITRE ATT&CK': ['Map lateral movement via PsExec to MITRE ATT&CK', 'Mapped to <code>T1021.002</code> (SMB/Windows Admin Shares) under Lateral Movement. Sub-technique: Remote Services. Also triggers <code>T1569.002</code> (Service Execution). Recommend monitoring Event ID 7045 and 4624 Type 3.'],
+    };
+    pills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        pills.forEach(p => p.classList.remove('pill-active'));
+        pill.classList.add('pill-active');
+        const key = pill.textContent.trim();
+        const pair = responses[key];
+        if (!pair) return;
+        const userMsg = document.createElement('div');
+        userMsg.className = 'chat-msg chat-msg--user chat-msg--new';
+        userMsg.textContent = pair[0];
+        chatMessages.appendChild(userMsg);
+        const typing = document.createElement('div');
+        typing.className = 'chat-msg chat-msg--ai chat-typing';
+        typing.innerHTML = '<div class="dots"><span>•</span><span>•</span><span>•</span></div>';
+        chatMessages.appendChild(typing);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+        setTimeout(() => {
+          typing.remove();
+          const aiMsg = document.createElement('div');
+          aiMsg.className = 'chat-msg chat-msg--ai chat-msg--new';
+          aiMsg.innerHTML = '<span class="ai-label">SOC-Mate</span>' + pair[1];
+          chatMessages.appendChild(aiMsg);
+          chatMessages.scrollTop = chatMessages.scrollHeight;
+        }, 1200);
+      });
+    });
+  </script>
 </body>
 </html>
